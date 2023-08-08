@@ -10,7 +10,7 @@ Directory ```data``` is for data preprocess, including getting mel-spectrograms 
 ```
 
 ## Train Model
-After configuring the save path, log path, number of iterations, and other settings in train.sh, proceed with the training process.
+After configuring the save path, log path, number of iterations, and other settings in ```train.sh```, proceed with the training process.
 ```
 ./train.sh
 ```
