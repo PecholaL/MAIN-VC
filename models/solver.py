@@ -122,6 +122,7 @@ class Solver(object):
             emb_tmp = emb_tmp.detach()
             self.mi_net.train()
             mi_loss = -self.mi_net.loglikeli(emb_tmp, mu_tmp)
+            mi_loss.backward()
             self.mi_opt.step()
 
         # MI second forward
