@@ -7,27 +7,28 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn as nn
 
-def pad_layer(inData, layer, pad_mode='reflect'):
+
+def pad_layer(inData, layer, pad_mode="reflect"):
     kernel_size = layer.kernel_size[0]
     if kernel_size % 2 == 0:
-        pad = (kernel_size//2, kernel_size//2-1)
+        pad = (kernel_size // 2, kernel_size // 2 - 1)
     else:
-        pad = (kernel_size//2, kernel_size//2)
+        pad = (kernel_size // 2, kernel_size // 2)
     inData = F.pad(inData, pad=pad, mode=pad_mode)
     outData = layer(inData)
     return outData
 
 
-def pad_layer_2d(inData, layer, pad_mode='reflect'):
+def pad_layer_2d(inData, layer, pad_mode="reflect"):
     kernel_size = layer.kernel_size
     if kernel_size[0] % 2 == 0:
-        pad_x = [kernel_size[0]//2, kernel_size[0]//2 - 1]
+        pad_x = [kernel_size[0] // 2, kernel_size[0] // 2 - 1]
     else:
-        pad_x = [kernel_size[0]//2, kernel_size[0]//2]
+        pad_x = [kernel_size[0] // 2, kernel_size[0] // 2]
     if kernel_size[1] % 2 == 0:
-        pad_y = [kernel_size[1]//2, kernel_size[1]//2 - 1]
+        pad_y = [kernel_size[1] // 2, kernel_size[1] // 2 - 1]
     else:
-        pad_y = [kernel_size[1]//2, kernel_size[1]//2]
+        pad_y = [kernel_size[1] // 2, kernel_size[1] // 2]
     pad = tuple(pad_x + pad_y)
     inData = F.pad(inData, pad=pad, mode=pad_mode)
     outData = layer(inData)
@@ -45,7 +46,7 @@ def pixel_shuffle_1d(inData, scale_factor=2):
 
 
 def upsample(x, scale_factor=2):
-    return F.interpolate(x, scale_factor=scale_factor, mode='nearest')
+    return F.interpolate(x, scale_factor=scale_factor, mode="nearest")
 
 
 def flatten(x):
@@ -54,8 +55,8 @@ def flatten(x):
 
 def adaIn(z_c, z_s):
     """AdaIN
-        z_c: content embedding
-        z_s: speaker embedding
+    z_c: content embedding
+    z_s: speaker embedding
     """
     p = z_s.size(1) // 2
     mu, sigma = z_s[:, :p], z_s[:, p:]
@@ -64,13 +65,13 @@ def adaIn(z_c, z_s):
 
 
 def get_act_func(func_name):
-    if func_name == 'lrelu':
+    if func_name == "lrelu":
         return nn.LeakyReLU()
     return nn.ReLU()
 
 
 def cc(net):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     return net.to(device)
 
 

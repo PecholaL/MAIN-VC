@@ -2,6 +2,7 @@
     including stft transformation and mel spectrogram related parameters
 """
 
+
 class HyperParameters:
     # sample rate
     sr = 16000
@@ -9,7 +10,7 @@ class HyperParameters:
     # preemphsis
     preemph = 0.97
 
-    #fft points
+    # fft points
     n_fft = 2048
 
     # mel banks

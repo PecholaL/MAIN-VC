@@ -53,29 +53,29 @@ def log_mel_spectrogram(
     mel_fb = librosa.filters.mel(sr=sample_rate, n_fft=n_fft, n_mels=n_mels, fmin=f_min)
     mel_spec = np.dot(mel_fb, magnitude)
     log_mel_spec = np.log(mel_spec + 1e-9)
-    return log_mel_spec.T #shape(T, n_mels)
+    return log_mel_spec.T  # shape(T, n_mels)
 
 
 def read_speaker_info(speaker_info_path):
     speaker_ids = []
-    with open(speaker_info_path, 'r') as f:
+    with open(speaker_info_path, "r") as f:
         for i, line in enumerate(f):
             if i == 0:
                 continue
-            speaker_id = "p"+line.strip().split()[0]
+            speaker_id = "p" + line.strip().split()[0]
             speaker_ids.append(speaker_id)
     return speaker_ids
 
 
 def speaker_file_paths(root_dir):
-    speaker2filenames = defaultdict(lambda : [])
-    for path in sorted(glob.glob(os.path.join(root_dir, '*/*'))):
-        filename = path.strip().split('/')[-1]
+    speaker2filenames = defaultdict(lambda: [])
+    for path in sorted(glob.glob(os.path.join(root_dir, "*/*"))):
+        filename = path.strip().split("/")[-1]
         speaker_id = get_speaker_id(filename)
         speaker2filenames[speaker_id].append(path)
     return speaker2filenames
 
 
 def get_speaker_id(filename):
-    speaker_id, _ = re.match(r'(p\d+)_(\d+)\.wav', filename).groups()
+    speaker_id, _ = re.match(r"(p\d+)_(\d+)\.wav", filename).groups()
     return speaker_id
