@@ -9,7 +9,8 @@ import torch.nn as nn
 sys.path.append("..")
 from tools import *
 
-import yaml  # for test
+import yaml  # for test (build model)
+import time  # for test (inference time test)
 
 
 class SpeakerEncoder(nn.Module):
@@ -368,12 +369,21 @@ Es = SpeakerEncoder(**config['SpeakerEncoder'])
 Ec = ContentEncoder(**config['ContentEncoder'])
 D  = Decoder(**config['Decoder'])
 
-x = torch.randn(2, 80, 500)
-y = torch.randn(2, 80, 480)
+x = torch.randn(1, 80, 500)
+y = torch.randn(1, 80, 480)
+
+# inference time test
+start_time = time.time()
+
 cond = Es(x)
 mu = Ec(y)[0]
 dec = D(mu, cond)
-print(cond.shape)
-print(mu.shape)
-print(dec.shape)
+
+end_time = time.time()
+
+print(f"inference time cost: {(end_time-start_time)/100}")
+
+print(f"content embedding shape: {cond.shape}")
+print(f"speaker embedding shape: {mu.shape}}")
+print(f"converted mel shape: {dec.shape}")
 """
