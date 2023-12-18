@@ -33,11 +33,13 @@ class SpeakerEncoder(nn.Module):
         self.c_h = c_h
         self.c_out = c_out
         self.kernel_size = kernel_size
+        self.c_bank = c_bank
         self.n_conv_blocks = n_conv_blocks
         self.n_dense_blocks = n_dense_blocks
         self.subsample = subsample
         self.act = get_act_func(act)
 
+        # build spk. encoder
         self.APC_module = nn.ModuleList(
             [
                 nn.Conv1d(
@@ -83,7 +85,7 @@ class SpeakerEncoder(nn.Module):
             ]
         )
 
-        in_channels = 400
+        in_channels = self.c_in + self.c_bank * 5
         self.in_conv_layer = nn.Conv1d(in_channels, c_h, kernel_size=1)
 
         self.first_conv_layers = nn.ModuleList(
@@ -221,7 +223,7 @@ class ContentEncoder(nn.Module):
                 ),
             ]
         )
-        in_channels = 400
+        in_channels = in_channels = self.c_in + self.c_bank * 5
         self.in_conv_layer = nn.Conv1d(in_channels, c_h, kernel_size=1)
         self.first_conv_layers = nn.ModuleList(
             [nn.Conv1d(c_h, c_h, kernel_size=kernel_size) for _ in range(n_conv_blocks)]
