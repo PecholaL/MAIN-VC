@@ -40,3 +40,5 @@ if __name__ == "__main__":
 
     if args.iters > 0:
         solver.train(n_iterations=args.iters)
+
+    complete = input("[MAIN-VC]Training Completed! 🍹")
