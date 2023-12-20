@@ -34,6 +34,9 @@ Decoder:
     act: 'relu'
     sn: False
     dropout_rate: 0
+CMI:
+    mine: 64
+    club: 64
 data_loader:
     segment_size: 128
     frame_size: 1

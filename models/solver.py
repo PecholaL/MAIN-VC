@@ -89,10 +89,12 @@ class Solver(object):
             weight_decay=optimizer["weight_decay"],
         )
         print("[MAIN-VC]optimizer built")
-        self.mi_club = CLUBSample_group(64, 64, 64).to(
+        mine_size = self.config["CMI"]["mine"]
+        club_size = self.config["CMI"]["club"]
+        self.mi_club = CLUBSample_group(club_size, club_size, club_size).to(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
-        self.mi_mine = MINE(64, 64, 64).to(
+        self.mi_mine = MINE(mine_size, mine_size, mine_size).to(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
         print("[MAIN-VC]MI net built")
