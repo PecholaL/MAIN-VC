@@ -1,5 +1,7 @@
 # MAIN-VC
 
-## Demo Page
-🌀 The demo page of **MAIN-VC** can be found [👉🏻here](https://pecholal.github.io/MAIN-VC-demo/).
+[**MAIN-VC** home page](https://pecholal.github.io/MAIN-VC-demo/).
 
+## Citation
+If **MAIN-VC** helps your research, please cite it as, 
+`coming soon`
