@@ -16,21 +16,18 @@ The configuration of the model is in `./config.yaml`.
 Excute the bash `./train.sh` after modifying the configuration. The configuration in the file is our recommended. You can also adjust the size of layers in the network for better performance or less training consuming.
 
 ### III. Inference via trained MAIN-VC.
-Any suitably sized (i.e. the bank size of Mel-spectrogram) **pre-trained** vocoder model (eg. WaveRNN, Hifi-GAN, Mel-GAN) can be leveraged as a vocoder for MAIN-VC for Mel-spectrogram to waveform conversion.
-
-Set the path to the check-point file of pre-trained vocoder in `inference.sh` with the argument '-v'.
-
+Any suitably sized (i.e. the bank size of Mel-spectrogram) **pre-trained** vocoder model (eg. WaveRNN, Hifi-GAN, Mel-GAN) can be leveraged as a vocoder for MAIN-VC for Mel-spectrogram to waveform conversion.  
+Set the path to the check-point file of pre-trained vocoder in `inference.sh` with the argument '-v'.  
 Set the path to source/target/converted(output) wave file in `inference.sh` then excute it. 
 
 ### IV. Attention
-**Absolute path is preferred** for all the paths in our project.
-
-MAIN-VC is not very demanding on computing devices. It is sufficient to use a single Tesla V100 to train in our experiment.
+**Absolute path is preferred** for all the paths in our project.  
+MAIN-VC is not very demanding on computing devices. It is sufficient to use a single Tesla V100 to train in our experiment.  
 
 ## Citation
 If **MAIN-VC** helps your research, please cite it as,  
 Bibtex: `coming soon`  
 
-or with a hyperlink,  
+or with a [hyperlink](https://github.com/PecholaL/MAIN-VC),  
 Markdown: `[MAIN-VC](https://github.com/PecholaL/MAIN-VC)`  
 Latex: `\hyperlink{https://github.com/PecholaL/MAIN-VC}{\textsc{MAIN-VC}}`
