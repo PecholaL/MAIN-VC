@@ -122,25 +122,25 @@ class Inferencer(object):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument(
-        "-attr",
+        "--attr",
         "-a",
         help="attr file path",
         default="/Users/pecholalee/Coding/VC/mainVc_data/attr.pkl",
     )
     parser.add_argument(
-        "-config",
+        "--config",
         "-c",
         help="config file path",
         default="/Users/pecholalee/Coding/VC/MAIN-VC/config.yaml",
     )
     parser.add_argument(
-        "-model",
+        "--model",
         "-m",
         help="model path",
         default="/Users/pecholalee/Coding/VC/mainVc_data/save/mainVcModel.ckpt",
     )
     parser.add_argument(
-        "-vocoder",
+        "--vocoder",
         "-v",
         help="vocoder path",
         default="/Users/pecholalee/Coding/VC/mainVc_data/vocoder/vocoder.pt",
@@ -149,7 +149,7 @@ if __name__ == "__main__":
     parser.add_argument("-target", "-t", help="target wav path")
     parser.add_argument("-output", "-o", help="output wav path")
     parser.add_argument(
-        "-sample_rate", "-sr", help="sample rate", default=16000, type=int
+        "--sample_rate", "-r", help="sample rate", default=16000, type=int
     )
     args = parser.parse_args()
 
