@@ -7,12 +7,12 @@ One-shot voice conversion aims to change the timbre of any source speech to matc
 
 ## Usage
 ### I. Process training data.
-`make_dataset.py`->`sample_dataset.py`
+`make_dataset.py`->`sample_dataset.py`  
 Excute the bash `./data/preprocess/preprocess.sh` after modifying the configuration.
 
 ### II. Train MAIN-VC.
-The CMI module of MAIN-VC is packaged in `mi.py`. Then all the components are assmebled in `model.py`.
-The configuration of the model is in `./config.yaml`. 
+The CMI module of MAIN-VC is packaged in `mi.py`. Then all the components are assmebled in `model.py`.  
+The configuration of the model is in `./config.yaml`.  
 Excute the bash `./train.sh` after modifying the configuration. The configuration in the file is our recommended. You can also adjust the size of layers in the network for better performance or less training consuming.
 
 ### III. Inference via trained MAIN-VC.
@@ -28,5 +28,9 @@ Set the path to source/target/converted(output) wave file in `inference.sh` then
 MAIN-VC is not very demanding on computing devices. It is sufficient to use a single Tesla V100 to train in our experiment.
 
 ## Citation
-If **MAIN-VC** helps your research, please cite it as, 
-`coming soon`
+If **MAIN-VC** helps your research, please cite it as,  
+Bibtex: `coming soon`  
+
+or with a hyperlink,  
+Markdown: `[MAIN-VC](https://github.com/PecholaL/MAIN-VC)`  
+Latex: `\hyperlink{https://github.com/PecholaL/MAIN-VC}{\textsc{MAIN-VC}}`
