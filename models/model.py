@@ -176,6 +176,9 @@ class ContentEncoder(nn.Module):
         dropout_rate,
     ):
         super(ContentEncoder, self).__init__()
+        self.c_in = c_in
+        self.c_h = c_h
+        self.c_bank = c_bank
         self.n_conv_blocks = n_conv_blocks
         self.subsample = subsample
         self.act = get_act_func(act)
@@ -363,13 +366,13 @@ class MAINVC(nn.Module):
 
 
 """
-#__________test__________
-with open('config.yaml') as f:
+# __________test__________
+with open("../config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
-Es = SpeakerEncoder(**config['SpeakerEncoder'])
-Ec = ContentEncoder(**config['ContentEncoder'])
-D  = Decoder(**config['Decoder'])
+Es = SpeakerEncoder(**config["SpeakerEncoder"])
+Ec = ContentEncoder(**config["ContentEncoder"])
+D = Decoder(**config["Decoder"])
 
 x = torch.randn(1, 80, 500)
 y = torch.randn(1, 80, 480)

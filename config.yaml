@@ -4,8 +4,6 @@ SpeakerEncoder:
     c_out: 64
     c_bank: 64
     kernel_size: 5
-    bank_size: 8
-    bank_scale: 1
     n_conv_blocks: 6
     n_dense_blocks: 6
     subsample: [1, 2, 1, 2, 1, 2]
@@ -17,8 +15,6 @@ ContentEncoder:
     c_out: 64
     c_bank: 64
     kernel_size: 5
-    bank_size: 8
-    bank_scale: 1
     n_conv_blocks: 6
     subsample: [1, 2, 1, 2, 1, 2]
     act: 'relu'
