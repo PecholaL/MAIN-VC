@@ -30,4 +30,4 @@ Bibtex: `coming soon`
 
 or with a [hyperlink](https://github.com/PecholaL/MAIN-VC),  
 Markdown: `[MAIN-VC](https://github.com/PecholaL/MAIN-VC)`  
-Latex: `\hyperlink{https://github.com/PecholaL/MAIN-VC}{\textsc{MAIN-VC}}`
+Latex: `\hyperref{https://github.com/PecholaL/MAIN-VC}{\textsc{MAIN-VC}}`
