@@ -26,7 +26,17 @@ MAIN-VC is not very demanding on computing devices. It is sufficient to use a si
 
 ## Citation
 If **MAIN-VC** helps your research, please cite it as,  
-Bibtex: `coming soon`  
+Bibtex: 
+```
+@inproceedings{li2024mainvc,
+  title={MAIN-VC: Lightweight Speech Representation Disentanglement for One-shot Voice Conversion},
+  author={Li, Pengcheng and Wang, Jianzong and Zhang, Xulong and Zhang, Yong and Xiao, Jing and Cheng Ning},
+  booktitle={2024 International Joint Conference on Neural Networks},
+  pages={1--8},
+  year={2024},
+  organization={IEEE}
+}
+```
 
 or with a [hyperlink](https://github.com/PecholaL/MAIN-VC),  
 Markdown: `[MAIN-VC](https://github.com/PecholaL/MAIN-VC)`  
