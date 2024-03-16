@@ -30,9 +30,9 @@ Bibtex:
 ```
 @inproceedings{li2024mainvc,
   title={MAIN-VC: Lightweight Speech Representation Disentanglement for One-shot Voice Conversion},
-  author={Li, Pengcheng and Wang, Jianzong and Zhang, Xulong and Zhang, Yong and Xiao, Jing and Cheng Ning},
+  author={Li, Pengcheng and Wang, Jianzong and Zhang, Xulong and Zhang, Yong and Xiao, Jing and Cheng, Ning},
   booktitle={2024 International Joint Conference on Neural Networks},
-  pages={1--8},
+  pages={1--7},
   year={2024},
   organization={IEEE}
 }
