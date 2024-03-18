@@ -24,6 +24,11 @@ Set the path to source/target/converted(output) wave file in `inference.sh` then
 **Absolute path is preferred** for all the paths in our project.  
 MAIN-VC is not very demanding on computing devices. It is sufficient to use a single Tesla V100 to train in our experiment.  
 
+## Thanks
+[AdaIN-VC](https://github.com/jjery2243542/adaptive_voice_conversion)  
+[CLUB](https://github.com/Linear95/CLUB)  
+[MINE](https://arxiv.org/abs/1801.04062)  
+
 ## Citation
 If **MAIN-VC** helps your research, please cite it as,  
 Bibtex: 
