@@ -1,7 +1,7 @@
 # MAIN-VC
-## [![](https://img.shields.io/badge/LICENSE-Apache_2.0-red?style=flat)](https://github.com/PecholaL/MAIN-VC/blob/main/LICENSE) 
+[![](https://img.shields.io/badge/LICENSE-Apache_2.0-red?style=flat)](https://github.com/PecholaL/MAIN-VC/blob/main/LICENSE) 
 [![](https://img.shields.io/badge/IJCNN-2024-green?style=flat)](https://github.com/PecholaL/MAIN-VC) 
-[![](https://img.shields.io/badge/AI-security-pink?style=flat)](https://github.com/PecholaL/MAIN-VC) 
+[![](https://img.shields.io/badge/AI-speech-pink?style=flat)](https://github.com/PecholaL/MAIN-VC) 
 [![](https://img.shields.io/badge/Pechola_L-blue?style=flat)](https://github.com/PecholaL)
 
 [**MAIN-VC** home page](https://pecholal.github.io/MAIN-VC-demo/).
