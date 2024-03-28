@@ -1,5 +1,5 @@
 # MAIN-VC
-[![](https://img.shields.io/badge/LICENSE-Apache_2.0-orange?style=flat)](https://github.com/PecholaL/MAIN-VC/blob/main/LICENSE) 
+[![](https://img.shields.io/badge/LICENSE-Apache_2.0-yellow?style=flat)](https://github.com/PecholaL/MAIN-VC/blob/main/LICENSE) 
 [![](https://img.shields.io/badge/IJCNN-2024-green?style=flat)](https://2024.ieeewcci.org/) 
 [![](https://img.shields.io/badge/AI-speech-pink?style=flat)](https://github.com/PecholaL/MAIN-VC) 
 [![](https://img.shields.io/badge/arXiv-2405.0000-red?style=flat)](https://arxiv.org)
