@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/LICENSE-Apache_2.0-yellow?style=flat)](https://github.com/PecholaL/MAIN-VC/blob/main/LICENSE) 
 [![](https://img.shields.io/badge/IJCNN-2024-green?style=flat)](https://2024.ieeewcci.org/) 
 [![](https://img.shields.io/badge/AI-speech-pink?style=flat)](https://github.com/PecholaL/MAIN-VC) 
-[![](https://img.shields.io/badge/arXiv-2405.0000-red?style=flat)](https://arxiv.org)
+[![](https://img.shields.io/badge/arXiv-2405.00930-red?style=flat)](https://arxiv.org/pdf/2405.00930)
 [![](https://img.shields.io/badge/Pechola_L-blue?style=flat)](https://github.com/PecholaL)
 
 Lightweight Speech Representation Learning for One-Shot Voice Conversion  
@@ -31,9 +31,7 @@ Set the path to source/target/converted(output) wave file in `inference.sh` then
 MAIN-VC is not very demanding on computing devices. It is sufficient to use a single Tesla V100 to train in our experiment.  
 
 ## Thanks
-[AdaIN-VC](https://github.com/jjery2243542/adaptive_voice_conversion)  
-[CLUB](https://github.com/Linear95/CLUB)  
-[MINE](https://arxiv.org/abs/1801.04062)  
+[AdaIN-VC](https://github.com/jjery2243542/adaptive_voice_conversion) [CLUB](https://github.com/Linear95/CLUB)    
 
 ## Citation
 If **MAIN-VC** helps your research, please cite it as,  
