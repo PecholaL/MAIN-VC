@@ -349,10 +349,11 @@ class MAINVC(nn.Module):
 
     def forward(self, x, x_sf):
         emb = self.speaker_encoder(x_sf)
+        emb_ = self.speaker_encoder(x)
         mu, log_sigma = self.content_encoder(x)
         eps = log_sigma.new(*log_sigma.size()).normal_(0, 1)
         dec = self.decoder(mu + torch.exp(log_sigma / 2) * eps, emb)
-        return mu, log_sigma, emb, dec
+        return mu, log_sigma, emb, emb_, dec
 
     def inference(self, x, x_cond):
         emb = self.speaker_encoder(x_cond)

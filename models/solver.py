@@ -111,7 +111,7 @@ class Solver(object):
         x = cc(data1)
         x_sf = cc(self.time_shuffle(data1))
         x_ = cc(data2)
-        mu, log_sigma, emb, dec = self.model(x, x_sf)
+        mu, log_sigma, emb, emb_, dec = self.model(x, x_sf)
 
         # loss
         criterion = nn.L1Loss()
@@ -194,7 +194,7 @@ class Solver(object):
             data = next(self.train_iter)
 
             # log-tensorboard
-            meta = self.mainvc_step(data, lambda_kl, lambda_mi)
+            meta = self.mainvc_step(*data, lambda_kl, lambda_mi)
             if iteration % self.args.summary_steps == 0:
                 self.logger.add_scalars(
                     f"{self.args.tag}/mainvc_train", meta, iteration
