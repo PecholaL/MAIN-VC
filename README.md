@@ -15,12 +15,12 @@ One-shot voice conversion aims to change the timbre of any source speech to matc
 ## Usage
 ### I. Process training data.
 `make_dataset.py`->`sample_dataset.py`  
-Excute the bash `./data/preprocess/preprocess.sh` after modifying the configuration.
+Excute the bash `./data/preprocess/preprocess.sh` (.\data\preprocess\preprocess.sh for Windows) after modifying the configuration.
 
 ### II. Train MAIN-VC.
 The CMI module of MAIN-VC is packaged in `mi.py`. Then all the components are assmebled in `model.py`.  
 The configuration of the model is in `./config.yaml`.  
-Excute the bash `./train.sh` after modifying the configuration. The configuration in the file is our recommended. You can also adjust the size of layers in the network for better performance or less training consuming.
+Excute the bash `./train.sh` (.\train.bat for Windows) after modifying the configuration. The configuration in the file is our recommended. You can also adjust the size of layers in the network for better performance or less training consuming.
 
 ### III. Inference via trained MAIN-VC.
 Any suitably sized (i.e. the bank size of Mel-spectrogram) **pre-trained** vocoder model (eg. WaveRNN, Hifi-GAN, Mel-GAN) can be leveraged as a vocoder for MAIN-VC for Mel-spectrogram to waveform conversion.  

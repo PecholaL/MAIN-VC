@@ -70,7 +70,7 @@ def read_speaker_info(speaker_info_path):
 def speaker_file_paths(root_dir):
     speaker2filenames = defaultdict(lambda: [])
     for path in sorted(glob.glob(os.path.join(root_dir, "*/*"))):
-        filename = path.strip().split("/")[-1]
+        filename = path.strip().split("\\")[-1]  # "\\" for Windows, "/" for Linux
         speaker_id = get_speaker_id(filename)
         speaker2filenames[speaker_id].append(path)
     return speaker2filenames

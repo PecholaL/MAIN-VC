@@ -69,7 +69,7 @@ if __name__ == "__main__":
     with open(os.path.join(output_dir, "in_test_files.txt"), "w") as f:
         for path in in_test_path_list:
             f.write(f"{path}\n")
-    with open(os.path.join(output_dir, "train_speaker2filenames.pkl"), "wb") as f:
+    with open(os.path.join(output_dir, "speaker2filenames.pkl"), "wb") as f:
         pickle.dump(train_speaker2filenames, f)
 
     # add paths of test_speakers' speech to out_test
