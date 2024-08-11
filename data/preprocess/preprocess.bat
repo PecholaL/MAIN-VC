@@ -27,4 +27,5 @@ for /f "tokens=1,2 delims==" %%A in (dataset_config.txt) do (
 
 %PYTHON_PATH% "C:\Users\pecho\Documents\DL\MAIN-VC\data\preprocess\sample_dataset.py" "%DATA_DIR%\train.pkl" "%DATA_DIR%\speaker2filenames.pkl" "%DATA_DIR%\train_samples_%SEGMENT_SIZE%.json" "%TRAINING_SAMPLES%" "%SEGMENT_SIZE%"
 
+endlocal
 pause
