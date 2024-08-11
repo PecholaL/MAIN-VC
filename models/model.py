@@ -366,7 +366,7 @@ class MAINVC(nn.Module):
         return emb
 
 
-"""
+# """
 # __________test__________
 with open("../config.yaml") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
@@ -390,6 +390,6 @@ end_time = time.time()
 print(f"inference time cost: {(end_time-start_time)/100}")
 
 print(f"content embedding shape: {cond.shape}")
-print(f"speaker embedding shape: {mu.shape}}")
+print(f"speaker embedding shape: {mu.shape}")
 print(f"converted mel shape: {dec.shape}")
-"""
+# """
