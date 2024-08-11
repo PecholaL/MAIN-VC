@@ -4,7 +4,7 @@
 
 
 class HyperParameters:
-    # sample rate
+    # sampling rate
     sr = 16000
 
     # preemphsis

@@ -77,5 +77,8 @@ def speaker_file_paths(root_dir):
 
 
 def get_speaker_id(filename):
-    speaker_id, _ = re.match(r"(p\d+)_(\d+)\.wav", filename).groups()
+    pattern = r'^p\d{3}_(\d{3})\.wav$'
+    match = re.search(pattern, filename)
+    if match:
+        speaker_id = filename.split('_')[0]
     return speaker_id

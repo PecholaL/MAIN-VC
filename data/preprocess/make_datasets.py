@@ -34,13 +34,13 @@ if __name__ == "__main__":
     f_min = hp.f_min
 
     speaker_ids = read_speaker_info(speaker_info_path)
-    print(f"[make_datasets]got {len(speaker_ids)} speakers' ids")
+    print(f"[MAIN-VC](make_datasets) got {len(speaker_ids)} speakers' ids")
     random.shuffle(speaker_ids)
 
     train_speaker_ids = speaker_ids[:-test_speakers]
     test_speaker_ids = speaker_ids[-test_speakers:]
 
-    with open(os.path.join(output_dir, "unseen_speaker_ids.text"), "w") as f:
+    with open(os.path.join(output_dir, "unseen_speaker_ids.txt"), "w") as f:
         for id in test_speaker_ids:
             f.write(f"{id}\n")
     with open(os.path.join(output_dir, "seen_speaker_ids.txt"), "w") as f:
@@ -48,7 +48,7 @@ if __name__ == "__main__":
             f.write(f"{id}\n")
 
     print(
-        f"[make_datasets]{len(train_speaker_ids)} train speakers, {len(test_speaker_ids)} test speakers"
+        f"[MAIN-VC](make_datasets) {len(train_speaker_ids)} train speakers, {len(test_speaker_ids)} test speakers"
     )
 
     speaker2filepaths = speaker_file_paths(data_dir)
@@ -86,14 +86,14 @@ if __name__ == "__main__":
         ["train", "in_test", "out_test"],
         [train_path_list, in_test_path_list, out_test_path_list],
     ):
-        print(f"[make_datasets]processed {dataset_type} set, {len(path_list)} files")
+        print(f"[MAIN-VC](make_datasets) processed {dataset_type} set, {len(path_list)} files")
         data = {}
         output_path = os.path.join(output_dir, f"{dataset_type}.pkl")
         all_train_data = []
 
         for i, path in enumerate(sorted(path_list)):
             if i % 1000 == 0 or i == len(path_list) - 1:
-                print(f"[make_datasets]processed {i} file of {dataset_type} set")
+                print(f"[MAIN-VC](make_datasets) processed {i} file of {dataset_type} set")
             filename = path.strip().split("/")[-1]
             wav = load_wav(path, sample_rate)
             mel = log_mel_spectrogram(
