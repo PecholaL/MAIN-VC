@@ -55,7 +55,7 @@ class CLUBSample_group(nn.Module):  # Sampled version of the CLUB estimator
         x_samples = (
             x_samples.unsqueeze(1)
             .expand(-1, y_samples.shape[1], -1)
-            .reshape(-1, x_samples[-1])
+            .reshape(-1, x_samples.shape[-1])
         )
         y_samples = y_samples.reshape(-1, y_samples.shape[-1])
 
@@ -104,3 +104,29 @@ class MINE(nn.Module):
 
     def learning_loss(self, x_samples, y_samples):
         return -self.forward(x_samples, y_samples)
+
+
+"""
+# __________test__________
+import yaml
+with open("../config.yaml") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+mine_size = config["CMI"]["mine"]
+club_size = config["CMI"]["club"]
+mi_club = CLUBSample_group(club_size, club_size, club_size).to("cpu")
+mi_mine = MINE(mine_size//2, mine_size//2, mine_size).to("cpu")
+
+mu = torch.rand(1, 64, 16)
+emb = torch.rand(1, 64)
+
+mu = mu.transpose(1, 2)
+club_loss = -mi_club.loglikeli(emb, mu)
+mine_loss = mi_mine.learning_loss(emb, mu)
+club_mi_est = mi_club.mi_est(emb, mu)
+mine_mi_est = mi_mine(emb, mu)
+print(club_loss)
+print(mine_loss)
+print(club_mi_est)
+print(mine_mi_est)
+
+"""

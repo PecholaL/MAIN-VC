@@ -22,7 +22,7 @@ class Solver(object):
         self.config = config
         self.args = args
 
-        self.logger = SummaryWriter(self.args.logdir)
+        self.logger = SummaryWriter(self.args.log_dir)
 
         self.get_data_loaders()
 
@@ -94,9 +94,12 @@ class Solver(object):
         self.mi_club = CLUBSample_group(club_size, club_size, club_size).to(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
-        self.mi_mine = MINE(mine_size, mine_size, mine_size).to(
+        self.mi_mine = MINE(mine_size//2, mine_size//2, mine_size).to(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
+        self.sia_activate = self.config["sia_activate"]
+        self.cmi_activate = self.config["cmi_activate"]
+        self.cmi_steps = self.config["cmi_steps"]
         print("[MAIN-VC]MI net built")
         self.mi_opt = torch.optim.Adam(
             itertools.chain(self.mi_club.parameters(), self.mi_mine.parameters()),
@@ -111,7 +114,7 @@ class Solver(object):
         x = cc(data1)
         x_sf = cc(self.time_shuffle(data1))
         x_ = cc(data2)
-        mu, log_sigma, emb, emb_, dec = self.model(x, x_sf)
+        mu, log_sigma, emb, emb_, dec = self.model(x_sf, x_)
 
         # loss
         criterion = nn.L1Loss()
@@ -119,41 +122,45 @@ class Solver(object):
         loss_flag = torch.ones([emb.shape[0]]).to(
             torch.device("cuda" if torch.cuda.is_available() else "cpu")
         )
+        emb = emb.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
+        emb_ = emb_.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
         # reconstruction loss
         loss_rec = criterion(dec, x)
         # KL loss
         loss_kl = 0.5 * torch.mean(torch.exp(log_sigma) + mu**2 - 1 - log_sigma)
-        emb = emb.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
-        emb_ = emb_.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
         # siamese loss
         loss_sia = cos(emb, emb_, loss_flag)
 
-        # MI first forward
-        for _ in range(5):
-            self.mi_opt.zero_grad()
-            mu_tmp = mu.transpose(1, 2)
-            emb_tmp = emb
-            mu_tmp = mu_tmp.detach()
-            emb_tmp = emb_tmp.detach()
-            self.mi_club.train()
-            self.mi_mine.train()
-            # jointly train CLUB and MINE
-            self.club_loss = -self.mi_club.loglikeli(emb_tmp, mu_tmp)
-            self.mine_loss = self.mi_mine.learning_loss(emb_tmp, mu_tmp)
-            delta = self.mi_club.mi_est(emb_tmp, mu_tmp) - self.mi_mine(emb_tmp, mu_tmp)
-            gap_loss = delta if delta > 0 else 0
-            mimodule_loss = self.club_loss + self.mine_loss + gap_loss
-            mimodule_loss.backward(retain_graph=True)
-            self.mi_opt.step()
+        # CMI first forward
+        if self.cmi_activate:
+            for _ in range(self.cmi_steps):
+                self.mi_opt.zero_grad()
+                mu_tmp = mu.transpose(1, 2)
+                emb_tmp = emb
+                mu_tmp = mu_tmp.detach()
+                emb_tmp = emb_tmp.detach()
+                self.mi_club.train()
+                self.mi_mine.train()
+                # jointly train CLUB and MINE
+                self.club_loss = -self.mi_club.loglikeli(emb_tmp, mu_tmp)
+                self.mine_loss = self.mi_mine.learning_loss(emb_tmp, mu_tmp)
+                delta = self.mi_club.mi_est(emb_tmp, mu_tmp) - self.mi_mine(emb_tmp, mu_tmp)
+                gap_loss = delta if delta > 0 else 0
+                mimodule_loss = self.club_loss + self.mine_loss + gap_loss
+                mimodule_loss.backward(retain_graph=True)
+                self.mi_opt.step()
 
-        # MI second forward
+        # CMI second forward
         # MI loss
         loss_mi = -self.mi_club.mi_est(emb, mu.transpose(1, 2))
+
         # total loss
+        lambda_sia = self.config["lambda"]["lambda_sia"] if self.sia_activate else 0
+        lambda_mi = lambda_mi if self.cmi_activate else 0
         loss = (
             self.config["lambda"]["lambda_rec"] * loss_rec
             + lambda_kl * loss_kl
-            + self.config["lambda"]["lambda_sia"] * loss_sia
+            + lambda_sia * loss_sia
             + lambda_mi * loss_mi
         )
         # backward
@@ -167,10 +174,10 @@ class Solver(object):
         meta = {
             "loss_rec": loss_rec.item(),
             "loss_kl": loss_kl.item(),
-            "loss_sia": loss_sia.item(),
+            "loss_sia": loss_sia.item() if self.sia_activate else 0,
             "loss_mi": loss_mi.item(),
-            "club_loss": self.club_loss.item(),
-            "mine_loss": self.mine_loss.item(),
+            "club_loss": self.club_loss.item() if self.cmi_activate else 0,
+            "mine_loss": self.mine_loss.item() if self.cmi_activate else 0,
             "grad_norm": grad_norm,
         }
         return meta

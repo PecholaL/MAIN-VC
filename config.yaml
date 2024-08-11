@@ -36,7 +36,7 @@ CMI:
 data_loader:
     segment_size: 128
     frame_size: 1
-    batch_size: 32
+    batch_size: 16
     shuffle: True
 optimizer:
     lr: 0.0005
@@ -50,4 +50,7 @@ lambda:
     lambda_kl: 1
     lambda_sia: 10
     lambda_mi: 1
+sia_activate: 1
+cmi_activate: 0
+cmi_steps: 5
 annealing_iters: 15000

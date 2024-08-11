@@ -1,7 +1,5 @@
 """MAIN-VC model
     Modified from: https://github.com/jjery2243542/adaptive_voice_conversion
-    Compare to v0, the conv_bank of ContentEncoder of AdaIN-VC is retained.
-    (while APC in v0)
 """
 
 import sys
@@ -138,7 +136,7 @@ class SpeakerEncoder(nn.Module):
             out = y + out
         return out
 
-    def APC_forward(self, inp, act):
+    def APC(self, inp, act):
         out_list = []
         for layer in self.APC_module:
             out_list.append(act(layer(inp)))
@@ -147,7 +145,7 @@ class SpeakerEncoder(nn.Module):
 
     def forward(self, x):
         # APC
-        out = self.APC_forward(x, act=self.act)
+        out = self.APC(x, act=self.act)
         # dimension reduction
         out = pad_layer(out, self.in_conv_layer)
         out = self.act(out)
@@ -180,17 +178,52 @@ class ContentEncoder(nn.Module):
         self.c_bank = c_bank
         self.n_conv_blocks = n_conv_blocks
         self.subsample = subsample
-        # hard coding for testing
-        self.bank_scale = 2
-        self.bank_size = 9
         self.act = get_act_func(act)
-
-        # build content encoder      
-        self.conv_bank = nn.ModuleList([
-                nn.Conv1d(c_in, c_bank, kernel_size=k) 
-                for k in range(self.bank_scale, self.bank_size + 1, self.bank_scale)
-        ])
-        in_channels = self.c_bank * (self.bank_size // self.bank_scale) + c_in
+        self.APC_module = nn.ModuleList(
+            [
+                nn.Conv1d(
+                    c_in,
+                    c_bank,
+                    kernel_size=3,
+                    padding=1,
+                    dilation=1,
+                    padding_mode="reflect",
+                ),
+                nn.Conv1d(
+                    c_in,
+                    c_bank,
+                    kernel_size=3,
+                    padding=2,
+                    dilation=2,
+                    padding_mode="reflect",
+                ),
+                nn.Conv1d(
+                    c_in,
+                    c_bank,
+                    kernel_size=3,
+                    padding=4,
+                    dilation=4,
+                    padding_mode="reflect",
+                ),
+                nn.Conv1d(
+                    c_in,
+                    c_bank,
+                    kernel_size=3,
+                    padding=6,
+                    dilation=6,
+                    padding_mode="reflect",
+                ),
+                nn.Conv1d(
+                    c_in,
+                    c_bank,
+                    kernel_size=3,
+                    padding=8,
+                    dilation=8,
+                    padding_mode="reflect",
+                ),
+            ]
+        )
+        in_channels = in_channels = self.c_in + self.c_bank * 5
         self.in_conv_layer = nn.Conv1d(in_channels, c_h, kernel_size=1)
         self.first_conv_layers = nn.ModuleList(
             [nn.Conv1d(c_h, c_h, kernel_size=kernel_size) for _ in range(n_conv_blocks)]
@@ -206,16 +239,15 @@ class ContentEncoder(nn.Module):
         self.std_layer = nn.Conv1d(c_h, c_out, kernel_size=1)
         self.dropout_layer = nn.Dropout(p=dropout_rate)
 
-    def conv_bank_forward(self, x, act, pad_type='reflect'):
-        outs = []
-        for layer in self.conv_bank:
-            out = act(pad_layer(x, layer, pad_type))
-            outs.append(out)
-        out = torch.cat(outs + [x], dim=1)
-        return out
+    def APC(self, inp, act):
+        out_list = []
+        for layer in self.APC_module:
+            out_list.append(act(layer(inp)))
+        outData = torch.cat(out_list + [inp], dim=1)
+        return outData
 
     def forward(self, inData):
-        outData = self.conv_bank_forward(inData, act=self.act)
+        outData = self.APC(inData, act=self.act)
         outData = pad_layer(outData, self.in_conv_layer)
         outData = self.norm_layer(outData)
         outData = self.act(outData)
