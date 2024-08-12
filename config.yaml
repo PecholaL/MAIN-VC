@@ -39,16 +39,19 @@ data_loader:
     batch_size: 16
     shuffle: True
 optimizer:
-    lr: 0.0005
+    lr: 0.001
     beta1: 0.9
     beta2: 0.999
     amsgrad: True
     weight_decay: 0.0001
     grad_norm: 5
+scheduler:
+    step_size: 10000
+    gamma: 0.8
 lambda:
     lambda_rec: 10
     lambda_kl: 1
-    lambda_sia: 10
+    lambda_sia: 5
     lambda_mi: 1
 sia_activate: 1
 cmi_activate: 0

@@ -49,11 +49,13 @@ if __name__ == "__main__":
             print(f"[MAIN-VC](sample_dataset) sample {i} samples")
 
         filepath_1 = filepath_list[utt_index]
-        speaker_id = get_speaker_id(filepath_1.strip().split("\\")[-1]) # split("/") in Linux
+        speaker_id = get_speaker_id(
+            filepath_1.strip().split("\\")[-1]
+        )  # split("/") in Linux
         filepath_2 = random.choice(speaker2filepaths[speaker_id])
-        while len(data[filepath_2])<segment_size:
+        while len(data[filepath_2]) < segment_size:
             filepath_2 = random.choice(speaker2filepaths[speaker_id])
-        
+
         # t is the start point of clipping
         t_1 = random.randint(0, len(data[filepath_1]) - segment_size)
         t_2 = random.randint(0, len(data[filepath_2]) - segment_size)

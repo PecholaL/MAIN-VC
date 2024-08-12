@@ -3,7 +3,7 @@
 
 import yaml
 from argparse import ArgumentParser
-from models.solver import Solver
+from solver import Solver
 
 if __name__ == "__main__":
     parser = ArgumentParser()

@@ -185,11 +185,13 @@ class ContentEncoder(nn.Module):
         self.bank_size = 9
         self.act = get_act_func(act)
 
-        # build content encoder      
-        self.conv_bank = nn.ModuleList([
-                nn.Conv1d(c_in, c_bank, kernel_size=k) 
+        # build content encoder
+        self.conv_bank = nn.ModuleList(
+            [
+                nn.Conv1d(c_in, c_bank, kernel_size=k)
                 for k in range(self.bank_scale, self.bank_size + 1, self.bank_scale)
-        ])
+            ]
+        )
         in_channels = self.c_bank * (self.bank_size // self.bank_scale) + c_in
         self.in_conv_layer = nn.Conv1d(in_channels, c_h, kernel_size=1)
         self.first_conv_layers = nn.ModuleList(
@@ -206,7 +208,7 @@ class ContentEncoder(nn.Module):
         self.std_layer = nn.Conv1d(c_h, c_out, kernel_size=1)
         self.dropout_layer = nn.Dropout(p=dropout_rate)
 
-    def conv_bank_forward(self, x, act, pad_type='reflect'):
+    def conv_bank_forward(self, x, act, pad_type="reflect"):
         outs = []
         for layer in self.conv_bank:
             out = act(pad_layer(x, layer, pad_type))
@@ -312,9 +314,9 @@ class MAINVC(nn.Module):
         self.content_encoder = ContentEncoder(**config["ContentEncoder"])
         self.decoder = Decoder(**config["Decoder"])
 
-    def forward(self, x, x_sf):
+    def forward(self, x, x_sf, x_):
         emb = self.speaker_encoder(x_sf)
-        emb_ = self.speaker_encoder(x)
+        emb_ = self.speaker_encoder(x_)
         mu, log_sigma = self.content_encoder(x)
         eps = log_sigma.new(*log_sigma.size()).normal_(0, 1)
         dec = self.decoder(mu + torch.exp(log_sigma / 2) * eps, emb)

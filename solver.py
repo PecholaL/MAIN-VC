@@ -1,16 +1,16 @@
 """training strategy of MAIN-VC
 """
 
-import torch
 import os
+import torch
 import torch.nn as nn
 import yaml
-import sys
 import random
 import itertools
+
+from torch.optim.lr_scheduler import StepLR
 from torch.utils.tensorboard import SummaryWriter
 
-sys.path.append("..")
 from data.PickleDataset import PickleDataset, get_data_loader
 from models.mi import CLUBSample_group, MINE
 from models.model import MAINVC
@@ -33,7 +33,7 @@ class Solver(object):
             self.load_model()
 
     def time_shuffle(self, data):
-        seg_list = list(torch.split(data, 5, dim=2))
+        seg_list = list(torch.split(data, 20, dim=2))
         random.shuffle(seg_list)
         return torch.cat(seg_list, dim=2)
 
@@ -88,13 +88,17 @@ class Solver(object):
             amsgrad=optimizer["amsgrad"],
             weight_decay=optimizer["weight_decay"],
         )
+        scheduler = self.config["scheduler"]
+        self.sched = StepLR(
+            self.opt, step_size=scheduler["step_size"], gamma=scheduler["gamma"]
+        )
         print("[MAIN-VC]optimizer built")
         mine_size = self.config["CMI"]["mine"]
         club_size = self.config["CMI"]["club"]
         self.mi_club = CLUBSample_group(club_size, club_size, club_size).to(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
-        self.mi_mine = MINE(mine_size//2, mine_size//2, mine_size).to(
+        self.mi_mine = MINE(mine_size // 2, mine_size // 2, mine_size).to(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
         self.sia_activate = self.config["sia_activate"]
@@ -114,7 +118,7 @@ class Solver(object):
         x = cc(data1)
         x_sf = cc(self.time_shuffle(data1))
         x_ = cc(data2)
-        mu, log_sigma, emb, emb_, dec = self.model(x_sf, x_)
+        mu, log_sigma, emb, emb_, dec = self.model(x, x_sf, x_)
 
         # loss
         criterion = nn.L1Loss()
@@ -144,7 +148,9 @@ class Solver(object):
                 # jointly train CLUB and MINE
                 self.club_loss = -self.mi_club.loglikeli(emb_tmp, mu_tmp)
                 self.mine_loss = self.mi_mine.learning_loss(emb_tmp, mu_tmp)
-                delta = self.mi_club.mi_est(emb_tmp, mu_tmp) - self.mi_mine(emb_tmp, mu_tmp)
+                delta = self.mi_club.mi_est(emb_tmp, mu_tmp) - self.mi_mine(
+                    emb_tmp, mu_tmp
+                )
                 gap_loss = delta if delta > 0 else 0
                 mimodule_loss = self.club_loss + self.mine_loss + gap_loss
                 mimodule_loss.backward(retain_graph=True)
@@ -152,7 +158,7 @@ class Solver(object):
 
         # CMI second forward
         # MI loss
-        loss_mi = -self.mi_club.mi_est(emb, mu.transpose(1, 2))
+        loss_mi = self.mi_club.mi_est(emb, mu.transpose(1, 2))
 
         # total loss
         lambda_sia = self.config["lambda"]["lambda_sia"] if self.sia_activate else 0
@@ -171,6 +177,7 @@ class Solver(object):
             self.model.parameters(), max_norm=self.config["optimizer"]["grad_norm"]
         )
         self.opt.step()
+        self.sched.step()
         meta = {
             "loss_rec": loss_rec.item(),
             "loss_kl": loss_kl.item(),
@@ -219,7 +226,8 @@ class Solver(object):
                 f"loss_kl={loss_kl:.6f}",
                 f"loss_sia={loss_sia:.6f}",
                 f"loss_mi={loss_mi:.6f}",
-                f"club_loss={club_loss:.6f}" f"mine_loss={mine_loss:.6f}",
+                f"club_loss={club_loss:.6f}",
+                f"mine_loss={mine_loss:.6f}",
                 end="\r",
             )
             # autosave
