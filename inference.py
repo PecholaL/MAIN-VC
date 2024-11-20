@@ -24,6 +24,7 @@ class Inferencer(object):
 
         self.build_model()
         self.load_model()
+        self.load_vocoder()
 
         # mean, stdev
         with open(self.args.attr, "rb") as f:
@@ -42,13 +43,13 @@ class Inferencer(object):
 
     def load_vocoder(self):
         print("[MAIN-VC]load vocoder from {self.args.vocoder}")
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.vocoder = torch.jit.load(f"{self.args.vocoder}").to(device).eval()
+        # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.vocoder = torch.jit.load(f"{self.args.vocoder}").to("cpu").eval()
 
     def toWav(self, mel):
         print(f"convert mel-spect shapes {mel.shape} into wav")
         with torch.no_grad():
-            wav = self.vocoder.generate([cc(torch.from_numpy(mel).float())])[0]
+            wav = self.vocoder.generate([torch.from_numpy(mel).float()])[0]
             wav = wav.cpu().numpy()
             print("generate wav")
             return wav
@@ -84,8 +85,8 @@ class Inferencer(object):
         return ret
 
     def inference_from_path(self):
-        src_wav, _ = load_wav(self.args.source, hp.sr)
-        tar_wav, _ = load_wav(self.args.target, hp.sr)
+        src_wav = load_wav(self.args.source, hp.sr)
+        tar_wav = load_wav(self.args.target, hp.sr)
         src_mel = log_mel_spectrogram(
             src_wav,
             hp.preemph,
@@ -109,10 +110,14 @@ class Inferencer(object):
         src_mel = torch.from_numpy(self.normalize(src_mel)).float().cuda()
         tar_mel = torch.from_numpy(self.normalize(tar_mel)).float().cuda()
         conv_wav, _ = self.inference_one_utterance(src_mel, tar_mel)
-        src_info = self.args.source.split("/")[-1][:-4]
-        tar_info = self.args.target.split("/")[-1][:-4]
+        # Linux
+        # src_info = self.args.source.split("/")[-1][:-4]
+        # tar_info = self.args.target.split("/")[-1][:-4]
+        # Windows
+        src_info = self.args.source.split("\\")[-1][:-4]
+        tar_info = self.args.target.split("\\")[-1][:-4]
         write(
-            f"{self.arg.output}/{src_info}_{tar_info}.wav",
+            f"{self.args.output}/{src_info}_{tar_info}.wav",
             rate=self.args.sample_rate,
             data=conv_wav,
         )
@@ -121,29 +126,56 @@ class Inferencer(object):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
+    # Linux
+    # parser.add_argument(
+    #     "--attr",
+    #     "-a",
+    #     help="attr file path",
+    #     default="/Users/pecholalee/Coding/VC/mainVc_data/attr.pkl",
+    # )
+    # parser.add_argument(
+    #     "--config",
+    #     "-c",
+    #     help="config file path",
+    #     default="/Users/pecholalee/Coding/VC/MAIN-VC/config.yaml",
+    # )
+    # parser.add_argument(
+    #     "--model",
+    #     "-m",
+    #     help="model path",
+    #     default="/Users/pecholalee/Coding/VC/mainVc_data/save/mainVcModel.ckpt",
+    # )
+    # parser.add_argument(
+    #     "--vocoder",
+    #     "-v",
+    #     help="vocoder path",
+    #     default="/Users/pecholalee/Coding/VC/mainVc_data/vocoder/vocoder.pt",
+    # )
+
+    # Windows
     parser.add_argument(
         "--attr",
         "-a",
         help="attr file path",
-        default="/Users/pecholalee/Coding/VC/mainVc_data/attr.pkl",
+        default="c:\\Users\\pecho\\Documents\\DL\\mainVc_data\\attr.pkl",
     )
     parser.add_argument(
         "--config",
         "-c",
         help="config file path",
-        default="/Users/pecholalee/Coding/VC/MAIN-VC/config.yaml",
+        default="c:\\Users\\pecho\\Documents\\DL\\MAIN-VC\\config.yaml",
     )
     parser.add_argument(
         "--model",
         "-m",
         help="model path",
-        default="/Users/pecholalee/Coding/VC/mainVc_data/save/mainVcModel.ckpt",
+        default="c:\\Users\\pecho\\Documents\\DL\\mainVc_data\\save\\mainVcModel.ckpt",
     )
     parser.add_argument(
         "--vocoder",
         "-v",
         help="vocoder path",
-        default="/Users/pecholalee/Coding/VC/mainVc_data/vocoder/vocoder.pt",
+        default="c:\\Users\\pecho\\Documents\\DL\\mainVc_data\\vocoder\\vocoder.pt",
     )
     parser.add_argument("-source", "-s", help="source wav path")
     parser.add_argument("-target", "-t", help="target wav path")
