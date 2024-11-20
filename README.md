@@ -23,7 +23,8 @@ The configuration of the model is in `./config.yaml`.
 Excute the bash `./train.sh` (.\train.bat for Windows) after modifying the configuration. The configuration in the file is our recommended. You can also adjust the size of layers in the network for better performance or less training consuming.
 
 ### III. Inference via trained MAIN-VC.
-Any suitably sized (i.e. the bank size of Mel-spectrogram) **pre-trained** vocoder model (eg. WaveRNN, Hifi-GAN, Mel-GAN) can be leveraged as a vocoder for MAIN-VC for Mel-spectrogram to waveform conversion.  
+Any suitably sized (i.e. the bank size of Mel-spectrogram) **pre-trained** vocoder model can be leveraged as a vocoder for MAIN-VC for logMel-spectrogram to waveform conversion.  
+The pre-trained vocoder of [MAIN-VC demo](https://pecholal.github.io/MAIN-VC-demo/) is available at: [vocoder.pt](https://drive.google.com/file/d/1r0exien35ddN303dtYdCriHwDxVSFY_7/view?usp=sharing).  
 Set the path to the check-point file of pre-trained vocoder in `inference.sh` with the argument '-v'.  
 Set the path to source/target/converted(output) wave file in `inference.sh` then excute it. 
 
