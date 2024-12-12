@@ -157,25 +157,25 @@ if __name__ == "__main__":
         "--attr",
         "-a",
         help="attr file path",
-        default="c:\\Users\\pecho\\Documents\\DL\\mainVc_data\\attr.pkl",
+        default="c:\\Users\\leeklll\\Documents\\DL\\mainVc_data\\attr.pkl",
     )
     parser.add_argument(
         "--config",
         "-c",
         help="config file path",
-        default="c:\\Users\\pecho\\Documents\\DL\\MAIN-VC\\config.yaml",
+        default="c:\\Users\\leeklll\\Documents\\DL\\MAIN-VC\\config.yaml",
     )
     parser.add_argument(
         "--model",
         "-m",
         help="model path",
-        default="c:\\Users\\pecho\\Documents\\DL\\mainVc_data\\save\\mainVcModel.ckpt",
+        default="c:\\Users\\leeklll\\Documents\\DL\\mainVc_data\\save\\mainVcModel.ckpt",
     )
     parser.add_argument(
         "--vocoder",
         "-v",
         help="vocoder path",
-        default="c:\\Users\\pecho\\Documents\\DL\\mainVc_data\\vocoder\\vocoder.pt",
+        default="c:\\Users\\leeklll\\Documents\\DL\\mainVc_data\\vocoder\\vocoder.pt",
     )
     parser.add_argument("-source", "-s", help="source wav path")
     parser.add_argument("-target", "-t", help="target wav path")

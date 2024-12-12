@@ -1,5 +1,5 @@
-raw_data_dir=c:\Users\pecho\Documents\DL\datasets\VCTK\VCTK-Corpus
-data_dir=c:\Users\pecho\Documents\DL\mainVc_data
+raw_data_dir=c:\Users\leeklll\Documents\DL\datasets\VCTK\VCTK-Corpus
+data_dir=c:\Users\leeklll\Documents\DL\mainVc_data
 segment_size=128
 n_out_speakers=19
 test_prop=0.1
