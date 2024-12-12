@@ -7,7 +7,6 @@
 
 Lightweight Speech Representation Learning for One-Shot Voice Conversion  
 [**MAIN-VC** home page](https://pecholal.github.io/MAIN-VC-demo/)  
-[**MAIN-VC** 中文导读](https://pecholal.github.io/2024/02/14/main_vc/)  
 
 ## Abstract
 One-shot voice conversion aims to change the timbre of any source speech to match that of the unseen target speaker with only one speech sample. Existing methods face difficulty in satisfactory speech representation disentanglement and suffer from sizable networks. We propose a method to effectively disentangle with a concise neural network. Our model learns clean speech representations via siamese encoders with the enhancement of the designed mutual information estimator. The siamese structure and the newly designed convolution module contribute to the lightweight of our model while ensuring the performance in diverse voice conversion tasks.
